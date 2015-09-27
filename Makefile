@@ -101,7 +101,8 @@ CONFIG_CLEAN_VPATH_FILES =
 am__installdirs = "$(DESTDIR)$(bindir)"
 PROGRAMS = $(bin_PROGRAMS)
 am__dirstamp = $(am__leading_dot)dirstamp
-am_demoapp_OBJECTS = src/demoapp-main.$(OBJEXT)
+am_demoapp_OBJECTS = src/demoapp-main.$(OBJEXT) \
+	src/demoapp-renderer.$(OBJEXT)
 demoapp_OBJECTS = $(am_demoapp_OBJECTS)
 demoapp_LDADD = $(LDADD)
 AM_V_lt = $(am__v_lt_$(V))
@@ -146,6 +147,24 @@ AM_V_CXXLD = $(am__v_CXXLD_$(V))
 am__v_CXXLD_ = $(am__v_CXXLD_$(AM_DEFAULT_VERBOSITY))
 am__v_CXXLD_0 = @echo "  CXXLD   " $@;
 am__v_CXXLD_1 = 
+COMPILE = $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) \
+	$(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
+LTCOMPILE = $(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) \
+	$(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) \
+	$(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) \
+	$(AM_CFLAGS) $(CFLAGS)
+AM_V_CC = $(am__v_CC_$(V))
+am__v_CC_ = $(am__v_CC_$(AM_DEFAULT_VERBOSITY))
+am__v_CC_0 = @echo "  CC      " $@;
+am__v_CC_1 = 
+CCLD = $(CC)
+LINK = $(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) \
+	$(LIBTOOLFLAGS) --mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) \
+	$(AM_LDFLAGS) $(LDFLAGS) -o $@
+AM_V_CCLD = $(am__v_CCLD_$(V))
+am__v_CCLD_ = $(am__v_CCLD_$(AM_DEFAULT_VERBOSITY))
+am__v_CCLD_0 = @echo "  CCLD    " $@;
+am__v_CCLD_1 = 
 SOURCES = $(demoapp_SOURCES)
 DIST_SOURCES = $(demoapp_SOURCES)
 am__can_run_installinfo = \
@@ -191,25 +210,25 @@ distuninstallcheck_listfiles = find . -type f -print
 am__distuninstallcheck_listfiles = $(distuninstallcheck_listfiles) \
   | sed 's|^\./|$(prefix)/|' | grep -v '$(infodir)/dir$$'
 distcleancheck_listfiles = find . -type f -print
-ACLOCAL = ${SHELL} /home/remap/ndnrtc-hack/ndnrtc-ubuntu/ubuntu-demoapp/missing aclocal-1.14
+ACLOCAL = ${SHELL} /home/jcw/ndnrtc-ubuntu/missing aclocal-1.14
 AMTAR = $${TAR-tar}
 AM_DEFAULT_VERBOSITY = 1
 AR = ar
-AUTOCONF = ${SHELL} /home/remap/ndnrtc-hack/ndnrtc-ubuntu/ubuntu-demoapp/missing autoconf
-AUTOHEADER = ${SHELL} /home/remap/ndnrtc-hack/ndnrtc-ubuntu/ubuntu-demoapp/missing autoheader
-AUTOMAKE = ${SHELL} /home/remap/ndnrtc-hack/ndnrtc-ubuntu/ubuntu-demoapp/missing automake-1.14
+AUTOCONF = ${SHELL} /home/jcw/ndnrtc-ubuntu/missing autoconf
+AUTOHEADER = ${SHELL} /home/jcw/ndnrtc-ubuntu/missing autoheader
+AUTOMAKE = ${SHELL} /home/jcw/ndnrtc-ubuntu/missing automake-1.14
 AWK = mawk
 CC = gcc
 CCDEPMODE = depmode=gcc3
 CFLAGS = -g -O2
 CPP = gcc -E
-CPPFLAGS = 
+CPPFLAGS = -DNDN_LOGGING -DNDN_TRACE -DNDN_INFO -DNDN_WARN -DNDN_ERROR -DNDN_DEBUG
 CXX = g++
 CXXCPP = g++ -E
 CXXDEPMODE = depmode=gcc3
-CXXFLAGS = -g -O2 -std=gnu++11
+CXXFLAGS = -DNDN_LOGGING -DNDN_TRACE -DNDN_INFO -DNDN_WARN -DNDN_ERROR -DNDN_DEBUG -std=gnu++11
 CYGPATH_W = echo
-DEFS = -DPACKAGE_NAME=\"NDN-RTC\" -DPACKAGE_TARNAME=\"ndnrtc\ ubuntu\ demoapp\" -DPACKAGE_VERSION=\"1.0.1\" -DPACKAGE_STRING=\"NDN-RTC\ 1.0.1\" -DPACKAGE_BUGREPORT=\"peter@remap.ucla.edu\" -DPACKAGE_URL=\"https://github.com/remap/ndnrtc\" -DSTDC_HEADERS=1 -DHAVE_SYS_TYPES_H=1 -DHAVE_SYS_STAT_H=1 -DHAVE_STDLIB_H=1 -DHAVE_STRING_H=1 -DHAVE_MEMORY_H=1 -DHAVE_STRINGS_H=1 -DHAVE_INTTYPES_H=1 -DHAVE_STDINT_H=1 -DHAVE_UNISTD_H=1 -DHAVE_DLFCN_H=1 -DLT_OBJDIR=\".libs/\" -DHAVE_STDINT_H=1 -DHAVE_STDLIB_H=1 -DHAVE_STRING_H=1 -DHAVE_SYS_TIME_H=1 -DHAVE_UNISTD_H=1 -DHAVE_CXX11=1 -DHAVE_STDLIB_H=1 -DHAVE_MALLOC=1 -DHAVE_STDLIB_H=1 -DHAVE_REALLOC=1 -DHAVE_GETTIMEOFDAY=1 -DHAVE_MEMSET=1 -DHAVE_SQRT=1 -DHAVE_STRSTR=1
+DEFS = -DPACKAGE_NAME=\"NDN-RTC\ Ubuntu\ demoapp\" -DPACKAGE_TARNAME=\"ndnrtc\ ubuntu\ demoapp\" -DPACKAGE_VERSION=\"0.0.1\" -DPACKAGE_STRING=\"NDN-RTC\ Ubuntu\ demoapp\ 0.0.1\" -DPACKAGE_BUGREPORT=\"peter@remap.ucla.edu\" -DPACKAGE_URL=\"https://github.com/remap/ndnrtc\" -DSTDC_HEADERS=1 -DHAVE_SYS_TYPES_H=1 -DHAVE_SYS_STAT_H=1 -DHAVE_STDLIB_H=1 -DHAVE_STRING_H=1 -DHAVE_MEMORY_H=1 -DHAVE_STRINGS_H=1 -DHAVE_INTTYPES_H=1 -DHAVE_STDINT_H=1 -DHAVE_UNISTD_H=1 -DHAVE_DLFCN_H=1 -DLT_OBJDIR=\".libs/\" -DHAVE_STDINT_H=1 -DHAVE_STDLIB_H=1 -DHAVE_STRING_H=1 -DHAVE_SYS_TIME_H=1 -DHAVE_UNISTD_H=1 -DHAVE_CXX11=1 -DHAVE_STDLIB_H=1 -DHAVE_MALLOC=1 -DHAVE_STDLIB_H=1 -DHAVE_REALLOC=1 -DHAVE_GETTIMEOFDAY=1 -DHAVE_MEMSET=1 -DHAVE_SQRT=1 -DHAVE_STRSTR=1
 DEPDIR = .deps
 DLLTOOL = false
 DSYMUTIL = 
@@ -227,8 +246,8 @@ INSTALL_DATA = ${INSTALL} -m 644
 INSTALL_PROGRAM = ${INSTALL}
 INSTALL_SCRIPT = ${INSTALL}
 INSTALL_STRIP_PROGRAM = $(install_sh) -c -s
-LCONFIGDIR = /home/remap/ndnrtc-hack/ndnrtc-ubuntu/thirdparty/libconfig-1.5/bin/include
-LCONFIGLIB = /home/remap/ndnrtc-hack/ndnrtc-ubuntu/thirdparty/libconfig-1.5/bin/lib
+LCONFIGDIR = /home/jcw/libconfig-1.5/build/include
+LCONFIGLIB = /home/jcw/libconfig-1.5/build/lib
 LD = /usr/bin/ld -m elf_x86_64
 LDFLAGS = 
 LIBOBJS = 
@@ -238,13 +257,13 @@ LIPO =
 LN_S = ln -s
 LTLIBOBJS = 
 MAINT = #
-MAKEINFO = ${SHELL} /home/remap/ndnrtc-hack/ndnrtc-ubuntu/ubuntu-demoapp/missing makeinfo
+MAKEINFO = ${SHELL} /home/jcw/ndnrtc-ubuntu/missing makeinfo
 MANIFEST_TOOL = :
 MKDIR_P = /bin/mkdir -p
-NDNCPPDIR = /home/remap/ndnrtc-hack/ndn-cpp/build/include
-NDNCPPLIB = /home/remap/ndnrtc-hack/ndn-cpp/build/lib
-NDNRTCDIR = /home/remap/ndnrtc-hack/ndnrtc-boost/cpp/build/include
-NDNRTCLIB = /home/remap/ndnrtc-hack/ndnrtc-lib
+NDNCPPDIR = /home/jcw/ndn-cpp/build/include
+NDNCPPLIB = /home/jcw/ndn-cpp/build/lib
+NDNRTCDIR = /home/jcw/ndnrtc-boost/cpp/build/include
+NDNRTCLIB = /home/jcw/ndnrtc-boost/cpp/build/lib
 NM = /usr/bin/nm -B
 NMEDIT = 
 OBJC = gcc
@@ -259,22 +278,22 @@ OTOOL =
 OTOOL64 = 
 PACKAGE = ndnrtc ubuntu demoapp
 PACKAGE_BUGREPORT = peter@remap.ucla.edu
-PACKAGE_NAME = NDN-RTC
-PACKAGE_STRING = NDN-RTC 1.0.1
+PACKAGE_NAME = NDN-RTC Ubuntu demoapp
+PACKAGE_STRING = NDN-RTC Ubuntu demoapp 0.0.1
 PACKAGE_TARNAME = ndnrtc ubuntu demoapp
 PACKAGE_URL = https://github.com/remap/ndnrtc
-PACKAGE_VERSION = 1.0.1
+PACKAGE_VERSION = 0.0.1
 PATH_SEPARATOR = :
 RANLIB = ranlib
 SED = /bin/sed
 SET_MAKE = 
 SHELL = /bin/bash
 STRIP = strip
-VERSION = 1.0.1
-abs_builddir = /home/remap/ndnrtc-hack/ndnrtc-ubuntu/ubuntu-demoapp
-abs_srcdir = /home/remap/ndnrtc-hack/ndnrtc-ubuntu/ubuntu-demoapp
-abs_top_builddir = /home/remap/ndnrtc-hack/ndnrtc-ubuntu/ubuntu-demoapp
-abs_top_srcdir = /home/remap/ndnrtc-hack/ndnrtc-ubuntu/ubuntu-demoapp
+VERSION = 0.0.1
+abs_builddir = /home/jcw/ndnrtc-ubuntu
+abs_srcdir = /home/jcw/ndnrtc-ubuntu
+abs_top_builddir = /home/jcw/ndnrtc-ubuntu
+abs_top_srcdir = /home/jcw/ndnrtc-ubuntu
 ac_ct_AR = ar
 ac_ct_CC = gcc
 ac_ct_CXX = g++
@@ -306,7 +325,7 @@ host_vendor = unknown
 htmldir = ${docdir}
 includedir = ${prefix}/include
 infodir = ${datarootdir}/info
-install_sh = ${SHELL} /home/remap/ndnrtc-hack/ndnrtc-ubuntu/ubuntu-demoapp/install-sh
+install_sh = ${SHELL} /home/jcw/ndnrtc-ubuntu/install-sh
 libdir = ${exec_prefix}/lib
 libexecdir = ${exec_prefix}/libexec
 localedir = ${datarootdir}/locale
@@ -315,7 +334,7 @@ mandir = ${datarootdir}/man
 mkdir_p = $(MKDIR_P)
 oldincludedir = /usr/include
 pdfdir = ${docdir}
-prefix = /home/remap/ndnrtc-hack/ndnrtc-ubuntu/ubuntu-demoapp/build
+prefix = /home/jcw/ndnrtc-ubuntu/build
 program_transform_name = s,x,x,
 psdir = ${docdir}
 sbindir = ${exec_prefix}/sbin
@@ -327,9 +346,9 @@ top_build_prefix =
 top_builddir = .
 top_srcdir = .
 ACLOCAL_AMFLAGS = ${ACLOCAL_FLAGS} -I m4
-demoapp_SOURCES = src/main.cpp #src/config.cpp src/config.h 
-demoapp_CPPFLAGS = -I$(top_srcdir)/include -I/home/remap/ndnrtc-hack/ndnrtc-ubuntu/thirdparty/libconfig-1.5/bin/include -I/home/remap/ndnrtc-hack/ndnrtc-boost/cpp/build/include -I/home/remap/ndnrtc-hack/ndn-cpp/build/include
-demoapp_LDFLAGS = -L/home/remap/ndnrtc-hack/ndnrtc-ubuntu/thirdparty/libconfig-1.5/bin/lib -L/home/remap/ndnrtc-hack/ndn-cpp/build/lib -L/home/remap/ndnrtc-hack/ndnrtc-lib -lconfig++ -lndn-cpp -lndnrtc -lX11 -lXdamage -lXrender -lXext -lnss3 -lssl3 -lXfixes -lXcomposite
+demoapp_SOURCES = src/main.cpp src/renderer.h src/renderer.cpp #src/config.cpp src/config.h 
+demoapp_CPPFLAGS = -I$(top_srcdir)/include -I/home/jcw/libconfig-1.5/build/include -I/home/jcw/ndnrtc-boost/cpp/build/include -I/home/jcw/ndn-cpp/build/include
+demoapp_LDFLAGS = -L/home/jcw/libconfig-1.5/build/lib -L/home/jcw/ndn-cpp/build/lib -L/home/jcw/ndnrtc-boost/cpp/build/lib -lconfig++ -lndn-cpp -lndnrtc -lX11 -lXdamage -lXrender -lXext -lnss3 -lssl3 -lXfixes -lXcomposite
 noinst_SCRIPTS = params.cfg
 all: all-am
 
@@ -426,6 +445,8 @@ src/$(DEPDIR)/$(am__dirstamp):
 	@: > src/$(DEPDIR)/$(am__dirstamp)
 src/demoapp-main.$(OBJEXT): src/$(am__dirstamp) \
 	src/$(DEPDIR)/$(am__dirstamp)
+src/demoapp-renderer.$(OBJEXT): src/$(am__dirstamp) \
+	src/$(DEPDIR)/$(am__dirstamp)
 
 demoapp$(EXEEXT): $(demoapp_OBJECTS) $(demoapp_DEPENDENCIES) $(EXTRA_demoapp_DEPENDENCIES) 
 	@rm -f demoapp$(EXEEXT)
@@ -439,6 +460,7 @@ distclean-compile:
 	-rm -f *.tab.c
 
 include src/$(DEPDIR)/demoapp-main.Po
+include src/$(DEPDIR)/demoapp-renderer.Po
 
 .cpp.o:
 	$(AM_V_CXX)depbase=`echo $@ | sed 's|[^/]*$$|$(DEPDIR)/&|;s|\.o$$||'`;\
@@ -477,6 +499,20 @@ src/demoapp-main.obj: src/main.cpp
 #	$(AM_V_CXX)source='src/main.cpp' object='src/demoapp-main.obj' libtool=no \
 #	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
 #	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(demoapp_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o src/demoapp-main.obj `if test -f 'src/main.cpp'; then $(CYGPATH_W) 'src/main.cpp'; else $(CYGPATH_W) '$(srcdir)/src/main.cpp'; fi`
+
+src/demoapp-renderer.o: src/renderer.cpp
+	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(demoapp_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT src/demoapp-renderer.o -MD -MP -MF src/$(DEPDIR)/demoapp-renderer.Tpo -c -o src/demoapp-renderer.o `test -f 'src/renderer.cpp' || echo '$(srcdir)/'`src/renderer.cpp
+	$(AM_V_at)$(am__mv) src/$(DEPDIR)/demoapp-renderer.Tpo src/$(DEPDIR)/demoapp-renderer.Po
+#	$(AM_V_CXX)source='src/renderer.cpp' object='src/demoapp-renderer.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
+#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(demoapp_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o src/demoapp-renderer.o `test -f 'src/renderer.cpp' || echo '$(srcdir)/'`src/renderer.cpp
+
+src/demoapp-renderer.obj: src/renderer.cpp
+	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(demoapp_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT src/demoapp-renderer.obj -MD -MP -MF src/$(DEPDIR)/demoapp-renderer.Tpo -c -o src/demoapp-renderer.obj `if test -f 'src/renderer.cpp'; then $(CYGPATH_W) 'src/renderer.cpp'; else $(CYGPATH_W) '$(srcdir)/src/renderer.cpp'; fi`
+	$(AM_V_at)$(am__mv) src/$(DEPDIR)/demoapp-renderer.Tpo src/$(DEPDIR)/demoapp-renderer.Po
+#	$(AM_V_CXX)source='src/renderer.cpp' object='src/demoapp-renderer.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
+#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(demoapp_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o src/demoapp-renderer.obj `if test -f 'src/renderer.cpp'; then $(CYGPATH_W) 'src/renderer.cpp'; else $(CYGPATH_W) '$(srcdir)/src/renderer.cpp'; fi`
 
 mostlyclean-libtool:
 	-rm -f *.lo

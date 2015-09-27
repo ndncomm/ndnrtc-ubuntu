@@ -101,7 +101,8 @@ CONFIG_CLEAN_VPATH_FILES =
 am__installdirs = "$(DESTDIR)$(bindir)"
 PROGRAMS = $(bin_PROGRAMS)
 am__dirstamp = $(am__leading_dot)dirstamp
-am_demoapp_OBJECTS = src/demoapp-main.$(OBJEXT)
+am_demoapp_OBJECTS = src/demoapp-main.$(OBJEXT) \
+	src/demoapp-renderer.$(OBJEXT)
 demoapp_OBJECTS = $(am_demoapp_OBJECTS)
 demoapp_LDADD = $(LDADD)
 AM_V_lt = $(am__v_lt_@AM_V@)
@@ -146,6 +147,24 @@ AM_V_CXXLD = $(am__v_CXXLD_@AM_V@)
 am__v_CXXLD_ = $(am__v_CXXLD_@AM_DEFAULT_V@)
 am__v_CXXLD_0 = @echo "  CXXLD   " $@;
 am__v_CXXLD_1 = 
+COMPILE = $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) \
+	$(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
+LTCOMPILE = $(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) \
+	$(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) \
+	$(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) \
+	$(AM_CFLAGS) $(CFLAGS)
+AM_V_CC = $(am__v_CC_@AM_V@)
+am__v_CC_ = $(am__v_CC_@AM_DEFAULT_V@)
+am__v_CC_0 = @echo "  CC      " $@;
+am__v_CC_1 = 
+CCLD = $(CC)
+LINK = $(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) \
+	$(LIBTOOLFLAGS) --mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) \
+	$(AM_LDFLAGS) $(LDFLAGS) -o $@
+AM_V_CCLD = $(am__v_CCLD_@AM_V@)
+am__v_CCLD_ = $(am__v_CCLD_@AM_DEFAULT_V@)
+am__v_CCLD_0 = @echo "  CCLD    " $@;
+am__v_CCLD_1 = 
 SOURCES = $(demoapp_SOURCES)
 DIST_SOURCES = $(demoapp_SOURCES)
 am__can_run_installinfo = \
@@ -327,7 +346,7 @@ top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
 ACLOCAL_AMFLAGS = ${ACLOCAL_FLAGS} -I m4
-demoapp_SOURCES = src/main.cpp #src/config.cpp src/config.h 
+demoapp_SOURCES = src/main.cpp src/renderer.h src/renderer.cpp #src/config.cpp src/config.h 
 demoapp_CPPFLAGS = -I$(top_srcdir)/include -I@LCONFIGDIR@ -I@NDNRTCDIR@ -I@NDNCPPDIR@
 demoapp_LDFLAGS = -L@LCONFIGLIB@ -L@NDNCPPLIB@ -L@NDNRTCLIB@ -lconfig++ -lndn-cpp -lndnrtc -lX11 -lXdamage -lXrender -lXext -lnss3 -lssl3 -lXfixes -lXcomposite
 noinst_SCRIPTS = params.cfg
@@ -426,6 +445,8 @@ src/$(DEPDIR)/$(am__dirstamp):
 	@: > src/$(DEPDIR)/$(am__dirstamp)
 src/demoapp-main.$(OBJEXT): src/$(am__dirstamp) \
 	src/$(DEPDIR)/$(am__dirstamp)
+src/demoapp-renderer.$(OBJEXT): src/$(am__dirstamp) \
+	src/$(DEPDIR)/$(am__dirstamp)
 
 demoapp$(EXEEXT): $(demoapp_OBJECTS) $(demoapp_DEPENDENCIES) $(EXTRA_demoapp_DEPENDENCIES) 
 	@rm -f demoapp$(EXEEXT)
@@ -439,6 +460,7 @@ distclean-compile:
 	-rm -f *.tab.c
 
 @AMDEP_TRUE@@am__include@ @am__quote@src/$(DEPDIR)/demoapp-main.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@src/$(DEPDIR)/demoapp-renderer.Po@am__quote@
 
 .cpp.o:
 @am__fastdepCXX_TRUE@	$(AM_V_CXX)depbase=`echo $@ | sed 's|[^/]*$$|$(DEPDIR)/&|;s|\.o$$||'`;\
@@ -477,6 +499,20 @@ src/demoapp-main.obj: src/main.cpp
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='src/main.cpp' object='src/demoapp-main.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(demoapp_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o src/demoapp-main.obj `if test -f 'src/main.cpp'; then $(CYGPATH_W) 'src/main.cpp'; else $(CYGPATH_W) '$(srcdir)/src/main.cpp'; fi`
+
+src/demoapp-renderer.o: src/renderer.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(demoapp_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT src/demoapp-renderer.o -MD -MP -MF src/$(DEPDIR)/demoapp-renderer.Tpo -c -o src/demoapp-renderer.o `test -f 'src/renderer.cpp' || echo '$(srcdir)/'`src/renderer.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) src/$(DEPDIR)/demoapp-renderer.Tpo src/$(DEPDIR)/demoapp-renderer.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='src/renderer.cpp' object='src/demoapp-renderer.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(demoapp_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o src/demoapp-renderer.o `test -f 'src/renderer.cpp' || echo '$(srcdir)/'`src/renderer.cpp
+
+src/demoapp-renderer.obj: src/renderer.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(demoapp_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT src/demoapp-renderer.obj -MD -MP -MF src/$(DEPDIR)/demoapp-renderer.Tpo -c -o src/demoapp-renderer.obj `if test -f 'src/renderer.cpp'; then $(CYGPATH_W) 'src/renderer.cpp'; else $(CYGPATH_W) '$(srcdir)/src/renderer.cpp'; fi`
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) src/$(DEPDIR)/demoapp-renderer.Tpo src/$(DEPDIR)/demoapp-renderer.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='src/renderer.cpp' object='src/demoapp-renderer.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(demoapp_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o src/demoapp-renderer.obj `if test -f 'src/renderer.cpp'; then $(CYGPATH_W) 'src/renderer.cpp'; else $(CYGPATH_W) '$(srcdir)/src/renderer.cpp'; fi`
 
 mostlyclean-libtool:
 	-rm -f *.lo

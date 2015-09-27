@@ -5,12 +5,23 @@
 //
 
 #include <ndnrtc/interfaces.h>
+#include <GL/glew.h>
+#include <GLFW/glfw3.h>
+//#include <glm/glm.hpp>
 
 class RendererInternal : public ndnrtc::IExternalRenderer
 {
 public:
-    RendererInternal():renderBuffer_(nullptr), bufferSize_(0) { };
-    ~RendererInternal(){ };
+    RendererInternal():renderBuffer_(nullptr), bufferSize_(0) 
+    { 
+    	createWindow("NDN-RTC demo consumer v0.0.1");
+    }
+
+    ~RendererInternal()
+    { 
+    	releaseTexture();
+    	closeWindow();
+    }
     
     virtual uint8_t* getFrameBuffer(int width, int height);
     virtual void renderBGRAFrame(int64_t timestamp, int width, int height,
@@ -19,4 +30,12 @@ public:
 private:
     char *renderBuffer_;
     int bufferSize_;
+    GLuint texture_;
+    GLFWwindow* window_;
+
+    void createWindow(const std::string& windowName);
+    void closeWindow();
+
+    void createTexture(int width, int height);
+    void releaseTexture();
 };

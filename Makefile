@@ -348,7 +348,7 @@ top_srcdir = .
 ACLOCAL_AMFLAGS = ${ACLOCAL_FLAGS} -I m4
 demoapp_SOURCES = src/main.cpp src/renderer.h src/renderer.cpp #src/config.cpp src/config.h 
 demoapp_CPPFLAGS = -I$(top_srcdir)/include -I/home/jcw/libconfig-1.5/build/include -I/home/jcw/ndnrtc-boost/cpp/build/include -I/home/jcw/ndn-cpp/build/include
-demoapp_LDFLAGS = -L/home/jcw/libconfig-1.5/build/lib -L/home/jcw/ndn-cpp/build/lib -L/home/jcw/ndnrtc-boost/cpp/build/lib -lconfig++ -lndn-cpp -lndnrtc -lX11 -lXdamage -lXrender -lXext -lnss3 -lssl3 -lXfixes -lXcomposite
+demoapp_LDFLAGS = -L/home/jcw/libconfig-1.5/build/lib -L/home/jcw/ndn-cpp/build/lib -L/home/jcw/ndnrtc-boost/cpp/build/lib -L/usr/local/lib -lconfig++ -lndn-cpp -lndnrtc -lX11 -lXdamage -lXrender -lXext -lnss3 -lssl3 -lXfixes -lXcomposite -lglfw
 noinst_SCRIPTS = params.cfg
 all: all-am
 

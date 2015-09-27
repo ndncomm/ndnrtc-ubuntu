@@ -18,6 +18,8 @@
 
 #include "renderer.h"
 
+//using namespace glm;
+
 using namespace ndnrtc;
 using namespace ndnrtc::new_api;
 
@@ -90,7 +92,8 @@ void run(const std::string& configFile)
 
 	LogInfo("") << "loading params from " << configFile << "..." << std::endl;
 	
-	std::string sessionPrefix = "/ndn/edu/byu/ndnrtc/user/freeculture";
+	//std::string sessionPrefix = "/ndn/edu/byu/ndnrtc/user/freeculture";
+	std::string sessionPrefix = "/ndn/edu/ucla/remap/ndnrtc/user/remap";
 	GeneralParams generalParams;
 	{
 		// to save performance on VM
@@ -157,7 +160,8 @@ std::string videoStreamPrefix, audioStreamPrefix;
 		MediaStreamParams vstreamParams;
 		//MediaStreamParams streamParams;
 		{
-			vstreamParams.streamName_ = "movie";
+			//vstreamParams.streamName_ = "movie";
+			vstreamParams.streamName_ = "camera";
 			vstreamParams.type_ = MediaStreamParams::MediaStreamTypeVideo;
 			vstreamParams.producerParams_.segmentSize_ = 1000;
 			vstreamParams.producerParams_.freshnessMs_ = 0; // doesn't matter for fetching

@@ -5,7 +5,6 @@
 //
 #define FETCH_VIDEO
 #define FETCH_AUDIO
-//#define FETCH_VIDEO_AND_AUDIO
 
 #include <iostream>
 #include <ctype.h>
@@ -92,6 +91,7 @@ void run(const std::string& configFile)
 
 	LogInfo("") << "loading params from " << configFile << "..." << std::endl;
 	
+	RendererInternal renderer;
 	//std::string sessionPrefix = "/ndn/edu/byu/ndnrtc/user/freeculture";
 	std::string sessionPrefix = "/ndn/edu/ucla/remap/ndnrtc/user/remap";
 	GeneralParams generalParams;
@@ -126,34 +126,7 @@ void run(const std::string& configFile)
 		LogInfo("") << "fetching configuration:\n" << consumerParams << std::endl;
 	}
 
-std::string videoStreamPrefix, audioStreamPrefix;
-#ifdef FETCH_AUDIO
-	{// setup audio fetching
-		MediaStreamParams astreamParams;
-		//MediaStreamParams streamParams;
-		{
-			astreamParams.streamName_ = "sound";
-			astreamParams.type_ = MediaStreamParams::MediaStreamTypeAudio;
-			astreamParams.producerParams_.segmentSize_ = 1000;
-			astreamParams.producerParams_.freshnessMs_ = 0; // doesn't matter for fetching
-
-			// thread params we want to fetch from
-			AudioThreadParams *athreadParams = new AudioThreadParams();
-			athreadParams->threadName_ = "pcmu";
-
-			astreamParams.mediaThreads_.push_back(athreadParams);
-			LogInfo("") << "remote stream configuration:\n" << astreamParams << std::endl;
-		}
-
-		//std::string threadToFetch = "pcmu";
-		std::string athreadToFetch;
-		athreadToFetch = "pcmu";
-	
-		LogInfo("") << "initiating remote audio stream for " << sessionPrefix << std::endl;
-		audioStreamPrefix = ndnp->addRemoteStream(sessionPrefix, athreadToFetch, astreamParams, generalParams, consumerParams, NULL);
-		LogInfo("") << "demo audio fetching from " << audioStreamPrefix << " initiated..." << std::endl;
-	}
-#endif
+	std::string videoStreamPrefix, audioStreamPrefix;
 
 #ifdef FETCH_VIDEO
 	{// setup video fetching
@@ -187,7 +160,6 @@ std::string videoStreamPrefix, audioStreamPrefix;
 		std::string vthreadToFetch;
 		//std::string threadToFetch = "mid";
 		vthreadToFetch = "mid";
-		RendererInternal renderer;
 	
 		LogInfo("") << "initiating remote video stream for " << sessionPrefix << std::endl;
 		videoStreamPrefix = ndnp->addRemoteStream(sessionPrefix, vthreadToFetch, vstreamParams, generalParams, consumerParams, &renderer);
@@ -195,62 +167,32 @@ std::string videoStreamPrefix, audioStreamPrefix;
 	}
 #endif
 
-#ifdef FETCH_VIDEO_AND_AUDIO
+#ifdef FETCH_AUDIO
 	{// setup audio fetching
-		MediaStreamParams streamParamsa;
+		MediaStreamParams astreamParams;
+		//MediaStreamParams streamParams;
 		{
-			streamParamsa.streamName_ = "sound";
-			streamParamsa.type_ = MediaStreamParams::MediaStreamTypeAudio;
-			streamParamsa.producerParams_.segmentSize_ = 1000;
-			streamParamsa.producerParams_.freshnessMs_ = 0; // doesn't matter for fetching
+			astreamParams.streamName_ = "sound";
+			astreamParams.type_ = MediaStreamParams::MediaStreamTypeAudio;
+			astreamParams.producerParams_.segmentSize_ = 1000;
+			astreamParams.producerParams_.freshnessMs_ = 0; // doesn't matter for fetching
 
 			// thread params we want to fetch from
-			AudioThreadParams *threadParams = new AudioThreadParams();
-			threadParams->threadName_ = "pcmu";
+			AudioThreadParams *athreadParams = new AudioThreadParams();
+			athreadParams->threadName_ = "pcmu";
 
-			streamParamsa.mediaThreads_.push_back(threadParams);
-			LogInfo("") << "remote stream configuration:\n" << streamParamsa << std::endl;
+			astreamParams.mediaThreads_.push_back(athreadParams);
+			LogInfo("") << "remote stream configuration:\n" << astreamParams << std::endl;
 		}
 
-		std::string threadToFetcha = "pcmu";
+		//std::string threadToFetch = "pcmu";
+		std::string athreadToFetch;
+		athreadToFetch = "pcmu";
 	
 		LogInfo("") << "initiating remote audio stream for " << sessionPrefix << std::endl;
-		audioStreamPrefix = ndnp->addRemoteStream(sessionPrefix, threadToFetcha, streamParamsa, generalParams, consumerParams, NULL);
+		audioStreamPrefix = ndnp->addRemoteStream(sessionPrefix, athreadToFetch, astreamParams, generalParams, consumerParams, NULL);
 		LogInfo("") << "demo audio fetching from " << audioStreamPrefix << " initiated..." << std::endl;
-	
-		MediaStreamParams streamParamsv;
-		{
-			streamParamsv.streamName_ = "movie";
-			streamParamsv.type_ = MediaStreamParams::MediaStreamTypeVideo;
-			streamParamsv.producerParams_.segmentSize_ = 1000;
-			streamParamsv.producerParams_.freshnessMs_ = 0; // doesn't matter for fetching
-	
-			// thread params we want to fetch from
-			VideoThreadParams *threadParams = new VideoThreadParams();
-			threadParams->threadName_ = "mid";
-			threadParams->coderParams_.codecFrameRate_ = 30;
-			threadParams->coderParams_.gop_ = 30;
-			threadParams->coderParams_.startBitrate_ = 1000;
-			threadParams->coderParams_.maxBitrate_ = 10000;
-			threadParams->coderParams_.encodeHeight_ = 720;
-			threadParams->coderParams_.encodeWidth_ = 1280;
-			threadParams->deltaAvgSegNum_ = 5;
-			threadParams->deltaAvgParitySegNum_ = 2;
-			threadParams->keyAvgSegNum_ = 30;
-			threadParams->keyAvgParitySegNum_ = 5;
-	
-			streamParamsv.mediaThreads_.push_back(threadParams);
-			LogInfo("") << "remote video stream configuration:\n" << streamParamsv << std::endl;
-		}
-	
-		
-		std::string threadToFetchv = "mid";
-		RendererInternal renderer;
-	
-		LogInfo("") << "initiating remote video stream for " << sessionPrefix << std::endl;
-		videoStreamPrefix = ndnp->addRemoteStream(sessionPrefix, threadToFetchv, streamParamsv, generalParams, consumerParams, &renderer);
-		LogInfo("") << "demo video fetching from " << videoStreamPrefix << " initiated..." << std::endl;
-}
+	}
 #endif
 
 	sleep(30);

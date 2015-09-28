@@ -5,7 +5,11 @@
 //
 
 #include <stdlib.h>
+#include <assert.h>
 #include "renderer.h"
+
+#define WIN_W 800
+#define WIN_H 450
 
 #define GetError( )\
 {\
@@ -41,6 +45,8 @@ void RendererInternal::renderBGRAFrame(int64_t timestamp, int width, int height,
 {
     // do whatever we need, i.e. drop frame, render it, write to file, etc.
     LogInfo("") << "received frame (" << width << "x" << height << ") at " << timestamp << "ms" << std::endl;
+    //render();
+
     return;
 }
     
@@ -54,13 +60,13 @@ void RendererInternal::createWindow(const std::string& windowTitle)
     }
 
     glfwWindowHint(GLFW_SAMPLES, 4); // 4x antialiasing
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3); // We want OpenGL 3.3
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 2); // We want OpenGL 3.3
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 1);
     // glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE); // To make MacOS happy; should not be needed
-    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE); //We don't want the old OpenGL
+    // glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE); //We don't want the old OpenGL
     
     // Open a window and create its OpenGL context
-    window_ = glfwCreateWindow(800, 450, windowTitle.c_str(), NULL, NULL);
+    window_ = glfwCreateWindow(WIN_W, WIN_H, windowTitle.c_str(), NULL, NULL);
     
     if( window_ == NULL ){
         LogError("") << "FFailed to open GLFW window. If you have an Intel GPU, they are not 3.3 compatible. Try the 2.1 version of the tutorials." << std::endl;
@@ -68,33 +74,42 @@ void RendererInternal::createWindow(const std::string& windowTitle)
         return;
     }
 
-    glewExperimental=true; // Needed in core profile
+    //glewExperimental=true; // Needed in core profile
     
     if (glewInit() != GLEW_OK) 
     {
         LogError("") << "Failed to initialize GLEW" << std::endl;
         return;
     }
+
+    // glfwMakeContextCurrent(window_);
 }
 
 void RendererInternal::closeWindow()
 {
-    glfwDestroyWindow(window_);
+    //glfwDestroy (window_);
     glfwTerminate();
 }
 
 void RendererInternal::createTexture(int width, int height)
 {
-    LogDebug("") << "createing texture..." << std::endl;
+    int i = 0;
 
-    if (glIsTexture(_texture))
-    {
+    if (glIsTexture(texture_))
         releaseTexture();
-        _texture = 0;
-    }
     
+    // framebuffer_ = 0;
+    // glGenFramebuffers(1, &framebuffer_);
+    // GetError();
+    // LogDebug("") << i++ << std::endl;
+
+    // glBindFramebuffer(GL_FRAMEBUFFER, framebuffer_);
+    // GetError();
+    // LogDebug("") << i++ << std::endl;
+
     glGenTextures(1, (GLuint*) &texture_);
     GetError();
+    LogDebug("") << i++ << std::endl;
     
     glBindTexture(GL_TEXTURE_RECTANGLE_ARB, texture_);
     GetError();
@@ -115,20 +130,65 @@ void RendererInternal::createTexture(int width, int height)
     glTexImage2D(GL_TEXTURE_RECTANGLE_ARB,
                  0,
                  GL_RGBA8,
-                 width_,
-                 height_,
+                 width,
+                 height,
                  0,
                  GL_BGRA,
                  GL_UNSIGNED_INT_8_8_8_8,
                  renderBuffer_);
     GetError();
+
+    // LogDebug("") << i++ << std::endl;
+    // glFramebufferTexture(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, texture_, 0);
+    // GetError();
+ 
+    // LogDebug("") << i++ << std::endl;
+    // // Set the list of draw buffers.
+    // drawBuffers_[1] = {GL_COLOR_ATTACHMENT0};
+    // glDrawBuffers(1, drawBuffers_); // "1" is the size of DrawBuffers
+    // GetError();
+    // LogDebug("") << i++ << std::endl;
 }
 
 void RendererInternal::releaseTexture()
 {
     LogDebug("") << "releasing texture..." << std::endl;
-    
-    glDeleteTextures(1, (const GLuint*) &_texture);
+
+    glDeleteTextures(1, (const GLuint*) &texture_);
     GetError();
+    texture_ = 0;
+}
+
+void RendererInternal::render()
+{
+    /*GLfloat _startWidth = 0,
+    _startHeight = 0,
+    _stopWidth = WIN_W,
+    _stopHeight = WIN_H;
+    
+    GLfloat xStart = (2.0f * _startWidth - 1.0f);
+    GLfloat xStop = (2.0f * _stopWidth - 1.0f);
+    GLfloat yStart = (1.0f - 2.0f * _stopHeight);
+    GLfloat yStop = (1.0f - 2.0f * _startHeight);
+    
+    glBindTexture(GL_TEXTURE_RECTANGLE_ARB, texture_);
+    glLoadIdentity();
+    
+    glBegin(GL_POLYGON);
+    {
+        glTexCoord2f(0.0, 0.0); glVertex2f(xStart, yStop);
+        glTexCoord2f(WIN_W, 0.0); glVertex2f(xStop, yStop);
+        glTexCoord2f(WIN_W, WIN_H); glVertex2f(xStop, yStart);
+        glTexCoord2f(0.0, WIN_H); glVertex2f(xStart, yStart);
+    }
+    glEnd();
+    glFinish();
+
+    glBindFramebuffer(GL_FRAMEBUFFER, framebuffer_);
+    GetError();
+
+    glViewport(0,0,WIN_W,WIN_H);
+    GetError();
+    */
 }
 

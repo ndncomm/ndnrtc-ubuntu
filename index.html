@@ -1,15 +1,85 @@
-NDN-RTC on Ubuntu
+<html>
+
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="description" content="NDN-RTC on Ubuntu">
+
+    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
+
+    <title>NDN-RTC on Ubuntu (draft)</title>
+  </head>
+
+  <body>
+
+    <!-- HEADER -->
+    <div id="header_wrap" class="outer">
+        <header class="inner">
+          <a id="forkme_banner" href="https://ndncomm.github.io/ndnrtc-ubuntu">View on GitHub</a>
+
+          <h1 id="project_title">NDN-RTC on Ubuntu </h1>
+        </header>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div id="main_content_wrap" class="outer">
+      <section id="main_content" class="inner">
+        <h2>
+<a id="team-members" class="anchor" href="#team-members" aria-hidden="true"><span class="octicon octicon-link"></span></a>Team Members</h2>
+
+<p>Jiachen Wang (<a href="https://github.com/jiachenwang" class="user-mention">@jiachenwang</a>),Zhehao Wang (<a href="https://github.com/zhehaowang" class="user-mention"></a>), Peter Gusev (<a href="https://github.com/peetonn" class="user-mention">@peetonn</a>)</p>
+
+<h2>
+<a id="problem-statement" class="anchor" href="#problem-statement" aria-hidden="true"><span class="octicon octicon-link"></span></a>Previous Status</h2>
+
+<p>Previously NDN-RTC and ndncon are only available on OS X. NDN-RTC is a library for real-time streaming over NDN that is compatible with Linux. ndncon is a cocoa app on OS X which uses NDN-RTC to provide video and audio conferencing. </p>
+
+<h2>
+<a id="approach" class="anchor" href="#approach" aria-hidden="true"><span class="octicon octicon-link"></span></a>Approach</h2>
+
+<ul>Big effort: resolving NDN-RTC linking errors ==> Making NDN-RTC available on Ubuntu Linux (Thanks to Zhehao's help)</ul>
+<ul>Building console headless demo app: Allow comsuming media streams from remote producer</ul>
 
 
-Done
-Big problem: resolving NDN-RTC linking errors ==> Making NDN-RTC available on Ubuntu Linux
+<h2>
+<a id="results" class="anchor" href="#results" aria-hidden="true"><span class="octicon octicon-link"></span></a>Results</h2>
 
-Console headless demo app: 
-	- Allow comsuming media streams from remote producer
-	- Output audio streams
-	- Provide statistics output
+<p><img src="images/ScreenShot.png" alt="Running NDN-RTC demo app on Ubuntu">
+</p>
 
-Todo:
-GUI app on top of headless app:
-	- User discovery
-	- Group chat
+<h4>
+<a id="mini-ndn" class="anchor" href="#mini-ndn" aria-hidden="true"><span class="octicon octicon-link"></span></a>demo app on Ubuntu</h4>
+
+<p>It can get video and audio streams from remote producer, playout audio and show video frames it gets on the console.</p>
+
+
+<h2>
+<a id="todos" class="anchor" href="#todos" aria-hidden="true"><span class="octicon octicon-link"></span></a>TODO: GUI app on top of headless app</h2>
+
+<ul>
+<li>User discovery</li>
+<li>Group chat</li>
+</ul>
+
+<h2>
+<a id="future" class="anchor" href="#future" aria-hidden="true"><span class="octicon octicon-link"></span></a>Future</h2>
+
+<ul>
+<li>Testing NDN-RTC in larger scale: delopy on Cloud like Amazon and improve multi-party communication performance</li>
+<li>Testing NDN Testbed and NFD performance and provide feedback for NFD team</li>
+</ul>
+      </section>
+    </div>
+
+    <!-- FOOTER  -->
+    <div id="footer_wrap" class="outer">
+      <footer class="inner">
+        <p class="copyright">NDN-RTC on Ubuntu maintained by <a href="https://github.com/ndncomm">ndncomm</a></p>
+        <p>Published with <a href="https://pages.github.com">GitHub Pages</a></p>
+      </footer>
+    </div>
+
+    
+
+  </body>
+</html>

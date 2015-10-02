@@ -1,3 +1,44 @@
+### webrtc library
+Unlike webrtc on OS X, these webrtc libraries are not in a flat folder. They are in the following paths. 
+
+```
+/home/jcw/webrtc/src/out/Release 
+/home/jcw/webrtc/src/out/Release/obj/webrtc 
+/home/jcw/webrtc/src/out/Release/obj/webrtc/modules/video_coding/codecs/vp9 
+/home/jcw/webrtc/src/out/Release/obj/webrtc/modules/video_coding/codecs/vp8 
+/home/jcw/webrtc/src/out/Release/obj/webrtc/video_engine 
+/home/jcw/webrtc/src/out/Release/obj/webrtc/system_wrappers 
+/home/jcw/webrtc/src/out/Release/obj/webrtc/base 
+/home/jcw/webrtc/src/out/Release/obj/webrtc/tools 
+/home/jcw/webrtc/src/out/Release/obj/chromium/src/third_party/libjpeg_turbo 
+/home/jcw/webrtc/src/out/Release/obj/chromium/src/third_party/opus 
+/home/jcw/webrtc/src/out/Release/obj/chromium/src/third_party/protobuf 
+/home/jcw/webrtc/src/out/Release/obj/webrtc/voice_engine 
+/home/jcw/webrtc/src/out/Release/obj/webrtc/modules/video_coding/utility 
+/home/jcw/webrtc/src/out/Release/obj/chromium/src/third_party/libvpx 
+/home/jcw/webrtc/src/out/Release/obj/webrtc/modules 
+/home/jcw/webrtc/src/out/Release/obj/webrtc/common_video 
+/home/jcw/webrtc/src/out/Release/obj/webrtc/common_audio 
+/home/jcw/webrtc/src/out/Release/obj/webrtc/test 
+```
+There are objects files in these foler which is necessary for these libraries (*.a)which are thin archives. 
+We need to convert them to normal static library:
+```
+for lib in `find . -name '*.a'`;
+    do ar -t $lib | xargs ar rvs $lib.new && mv -v $lib.new $lib;
+done
+
+#copy to a flat folder
+mkdir  /home/jcw/webrtc/src/out/Release/alllib
+for lib in `find . -name '*.a'`;
+    do cp $lib /home/jcw/webrtc/src/out/Release/alllib;# provide this path as WEBRTCLIB to config.site of ndnrtc
+done
+
+```
+ref: [here](https://stackoverflow.com/questions/25554621/turn-thin-archive-into-normal-one)
+ref: [here](https://code.google.com/p/webrtc/issues/detail?id=5022)
+
+
 // this is the working version for Zhehao based on Jiachen's image. May or may not work for others, or have runtime errors as it's being tested
 
 // Please compile webrtc, openfec, boost, ndn-cpp and other dependencies before moving on to this.
